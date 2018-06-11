@@ -1,9 +1,11 @@
-# PRG -- Ročníkový projekt, 3. ročník
+# PRG -- 4 in a row
 
-1. přepište tento soubor
-1. napište sem název a zadání svého projektu
-1. v souboru [LICENSE](LICENSE) si nastavte licenci
-1. pracujte a **průběžně** sem nahrávejte své zdrojové kódy
+- Hra je na principu klasické hry "4 v řadě".
+- Velikost herního pole je 8x8 políček.
+- Výhra nastává pouze v případě 4 kuliček v řadě
+(vodorovně nebo svisle, nikoliv úhlopříčně).
+- Při zaplnění herního pole nastává remíza.
+- Pouze hra pro 2 hráče.
 
 
 ## Několik inspirujících odkazů
