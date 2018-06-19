@@ -1,105 +1,181 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Jun 12 17:17:35 2018
-
 @author: d3jvd
 """
-y = 1
-x = 3
-SIRKA = 1250
-VYSKA = 703
-
-PRUMER = 100
-SKOK = 110
-FONT = 42
-ODSAZENI = 30
-start = 0
-import pyglet
-from pyglet.window import key
-window = pyglet.window.Window(width=SIRKA, height=VYSKA)
-batch = pyglet.graphics.Batch() 
-
+import pyglet as py
+pr = '\nPravidla:\n\
+ - Hra je na principu typické hry "4 v řadě".\n\
+ - Velikost herního pole je 8x8 políček.\n\
+ - Výhra nastává poze v případě 4 kuliček v řadě \n\
+   (vodorovně, svisle nebo úhlopříčně).\n\
+ - Při zaplnění hracího pole nastává remíza\n\
+Ovládání:\n\
+ - Místo položení kuličky volíme levým tlačitkem myší\n\
+ - Hráči hrají vždy střídavě (jméno hráče na tahu je vždy napsané)'
 '''
 Menu:
 '''
-
-menu = pyglet.image.load('menu.png')
-menu.anchor_x = 0
-menu.anchor_y = 0
-menu.sprite = pyglet.sprite.Sprite(menu, batch=batch)
-start = pyglet.image.load('start_1.png')
-start.anchor_x = -300
-start.anchor_y = -300
-start.sprite = pyglet.sprite.Sprite(start, batch=batch)
-pravidla = pyglet.image.load('pravidla_0.png')
-pravidla.anchor_x = -300
-pravidla.anchor_y = -150
-pravidla.sprite = pyglet.sprite.Sprite(pravidla, batch=batch)
-konec = pyglet.image.load('konec_0.png')
-konec.anchor_x = -300
-konec.anchor_y = 0
-konec.sprite = pyglet.sprite.Sprite(konec, batch=batch)
-
-def tiktak(t):
-    global start
-    global pravidla
-    global konec
-    global menu
-    print (x)
-    if x % 3 == 0:
-        start = pyglet.image.load('start_1.png')
-        if y == 2:
-            menu = pyglet.image.load('hra.png')
-            menu.anchor_x = 0
-            menu.anchor_y = 0
-            menu.sprite = pyglet.sprite.Sprite(menu, batch=batch)
-        elif y == 0:
+menu = 1
+while menu:
+    a = 0
+    print ('\n---4 in row---')
+    a = input ('Start hry -> [S]\nPravidla -> [P]\nKonec -> [K]\n >>> ')
+    if a == 'S' or a == 's':
+        p1 = input ('\nJméno 1. hráče >>> ')
+        p2 = input ('Jméno 2. hráče >>> ')
+        print ('Zapínám hru...')
+        print ('\nNyní hraje: ',p1)
+        menu = 0 
+    elif a == 'P' or a == 'p':
+        print (pr)
+        a = input ('Zpět do menu -> [M]\n >>> ')
+        if a == 'M' or a == 'm':
             pass
+    elif a == 'K' or a =='k':
+        quit()
     else:
-        start = pyglet.image.load('start_0.png')
-    start.anchor_x = -300
-    start.anchor_y = -300
-    start.sprite = pyglet.sprite.Sprite(start, batch=batch)
-    if x % 3 == 1:
-         pravidla = pyglet.image.load('pravidla_1.png')
-         if y == 2:
-            menu = pyglet.image.load('pravidla.png')
-            menu.anchor_x = 0
-            menu.anchor_y = 0
-            menu.sprite = pyglet.sprite.Sprite(menu, batch=batch)
-         elif y == 0:
-            pass
-    else:
-        pravidla = pyglet.image.load('pravidla_0.png')
-    pravidla.anchor_x = -300
-    pravidla.anchor_y = -150
-    pravidla.sprite = pyglet.sprite.Sprite(pravidla, batch=batch)
-    if x % 3 == 2:
-        konec = pyglet.image.load('konec_1.png')
-    else:
-        konec = pyglet.image.load('konec_0.png')
-    konec.anchor_x = -300
-    konec.anchor_y = 0
-    konec.sprite = pyglet.sprite.Sprite(konec, batch=batch)
+        print ('Neznámý znak!')
+'''
+HRA:
+'''
+PLAYER = 1
+SIRKA = 800
+VYSKA = 600
+POLE = [[0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0]]
+
+KULE = [[0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0]]
+ 
+window = py.window.Window(SIRKA,VYSKA)
+
 @window.event
 def on_draw():
-    window.clear()
-    batch.draw()
+    global menu
+    pozadi = py.image.load('tabulka.png')
+    sprite = py.sprite.Sprite(pozadi)
+    sprite.draw()
+    for x in range (0,8):
+        for y in range (0,8):
+            if POLE [x][y] == 0:
+                pass
+            elif POLE [x][y] == 1:
+                KULE[x][y] =py.image.load('kule1.png')
+                sprite = py.sprite.Sprite(KULE[x][y])
+                sprite.x = x*100+15
+                sprite.y = ((7-y)*74.59)+3
+                sprite.draw()
+            elif POLE [x][y] == 2:
+                KULE[x][y] =py.image.load('kule2.png')
+                sprite = py.sprite.Sprite(KULE[x][y])
+                sprite.x = x*100+15
+                sprite.y = ((7-y)*74.59)+3
+                sprite.draw()
 
 @window.event
-def on_key_press(symbol, modifiers):
-    global x
-    global y
-    if symbol == key.DOWN:
-        x = x + 1
-    if symbol == key.UP:
-        x = x - 1
-    if symbol == key.ENTER:
-        y = 2
-    if symbol == key.ESCAPE:
-        y = 0
+def on_mouse_press(x, y, button, mod):
+    global uhel
+    if button == 1:
+        if x in range (0,100):
+            tah (0)
+        elif x in range (100,200):
+            tah (1)
+        elif x in range (200,300):
+            tah (2)
+        elif x in range (300,400):
+            tah (3)
+        elif x in range (400,500):
+            tah (4)
+        elif x in range (500,600):
+            tah (5)
+        elif x in range (600,700):
+            tah (6)
+        elif x in range (700,800):
+            tah (7)
 
-pyglet.clock.schedule_interval(tiktak, 1/30)    
+def tah (grid_x):
+    global p1
+    global p2
+    global PLAYER
+    global POLE
+    global KULE
+    global menu
+    global KONEC
+    for y in range (0,8):
+        try:
+            if POLE [grid_x][0] != 0 and POLE [grid_x][1] != 0 and POLE [grid_x][2] != 0 and POLE [grid_x][3] != 0 and POLE [grid_x][4] != 0 and POLE [grid_x][5] != 0 and POLE [grid_x][6] != 0 and POLE [grid_x][7] != 0 :
+                print ('\nKlikni jinam Nožko!')
+                if PLAYER == 1:
+                    PLAYER = 2
+                elif PLAYER == 2:
+                    PLAYER = 1
+                break
+            if POLE [grid_x][y+1] == 0:
+                pass
+            else:
+                POLE [grid_x][y] = PLAYER
+                break
+        except:
+            POLE [grid_x][7] = PLAYER
+    WIN = False
+    REM = 0
+    for x in range (0,8):
+        for y in range (0,8):
+            try:
+                if POLE [x][y] == 0:
+                    REM += 1
+                elif POLE [x][y] == POLE [x][y+1] == POLE [x][y+2] == POLE [x][y+3]:
+                    WIN = True             
+            except:
+                pass
+            try:
+                if POLE [x][y] == 0:
+                    REM += 1
+                elif POLE [x][y] == POLE [x+1][y] == POLE [x+2][y] == POLE [x+3][y]:
+                    WIN = True             
+            except:
+                pass
+            try:
+                if POLE [x][y] == 0:
+                    REM += 1
+                elif POLE [x][y] == POLE [x+1][y-1] == POLE [x+2][y-2] == POLE [x+3][y-3]:
+                    WIN = True       
+            except:
+                pass
+            try:
+                if POLE [x][y] == 0:
+                    REM += 1
+                elif POLE [x][y] == POLE [x+1][y+1] == POLE [x+2][y+2] == POLE [x+3][y+3]:
+                    WIN = True       
+            except:
+                pass
+    if not WIN and REM == 0:
+        print('\nRemíza, nikdo nevyhrál!')
+    elif WIN == True:
+        if PLAYER == 1:
+            print ('\nVyhrál: ',p1)
+        elif PLAYER == 2:
+            print ('\nVyhrál: ',p2)
+    if not WIN and REM != 0:   
+        if PLAYER == 1:
+            PLAYER = 2
+            print ('\nNyní hraje: ',p2)
+        elif PLAYER == 2:
+            PLAYER = 1
+            print ('\nNyní hraje: ',p1) 
 
-pyglet.app.run()
-print('Hotovo!')
+py.app.run()
+    
